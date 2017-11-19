@@ -1,7 +1,8 @@
-package com.scistor.process.operator;
+package com.scistor.process.operator.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.base.Objects;
+import com.scistor.process.operator.TransformInterface;
 import com.scistor.process.pojo.SlavesLocation;
 import com.scistor.process.record.Record;
 import com.scistor.process.utils.ErrorUtil;
