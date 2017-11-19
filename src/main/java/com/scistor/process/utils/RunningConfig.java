@@ -1,4 +1,4 @@
-package com.scistor.operator.utils;
+package com.scistor.process.utils;
 
 public interface RunningConfig {
 

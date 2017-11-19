@@ -1,11 +1,11 @@
-package com.scistor.operator.utils;
+package com.scistor.process.utils;
 
 import kafka.admin.TopicCommand;
 
 /**
  * Created by Administrator on 2017/11/10.
  */
-public class TopicUtil implements RunningConfig{
+public class TopicUtil implements RunningConfig {
 
 	/****
 	 * 查询所有主题

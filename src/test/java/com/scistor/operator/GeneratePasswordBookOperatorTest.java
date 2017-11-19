@@ -5,9 +5,9 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 /**
- * Unit test for simple GeneratePasswordBook.
+ * Unit test for simple GeneratePasswordBookOperator.
  */
-public class GeneratePasswordBookTest
+public class GeneratePasswordBookOperatorTest
     extends TestCase
 {
     /**
@@ -15,7 +15,7 @@ public class GeneratePasswordBookTest
      *
      * @param testName name of the test case
      */
-    public GeneratePasswordBookTest(String testName )
+    public GeneratePasswordBookOperatorTest(String testName )
     {
         super( testName );
     }
@@ -25,7 +25,7 @@ public class GeneratePasswordBookTest
      */
     public static Test suite()
     {
-        return new TestSuite( GeneratePasswordBookTest.class );
+        return new TestSuite( GeneratePasswordBookOperatorTest.class );
     }
 
     /**

@@ -1,13 +1,13 @@
-package com.scistor.operator;
+package com.scistor.process.operator;
 
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.base.Objects;
-import com.scistor.ETL.TransformInterface;
-import com.scistor.operator.pojo.SlavesLocation;
-import com.scistor.operator.utils.ErrorUtil;
-import com.scistor.operator.utils.RunningConfig;
-import com.scistor.operator.utils.TopicUtil;
-import com.scistor.operator.utils.ZKOperator;
+import com.scistor.process.pojo.SlavesLocation;
+import com.scistor.process.record.Record;
+import com.scistor.process.utils.ErrorUtil;
+import com.scistor.process.utils.RunningConfig;
+import com.scistor.process.utils.TopicUtil;
+import com.scistor.process.utils.ZKOperator;
 import kafka.consumer.Consumer;
 import kafka.consumer.ConsumerConfig;
 import kafka.consumer.ConsumerIterator;
@@ -29,17 +29,17 @@ import java.util.*;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.CountDownLatch;
 
-public class GeneratePasswordBook implements TransformInterface, RunningConfig
+public class GeneratePasswordBookOperator implements TransformInterface, RunningConfig
 {
 
-    private static final Log LOG = LogFactory.getLog(GeneratePasswordBook.class);
+    private static final Log LOG = LogFactory.getLog(GeneratePasswordBookOperator.class);
     private static final Integer ZK_SESSION_TIMEOUT = 24*60*60*1000; //24hour
     private String zookeeper_addr;
     private String topic;
     private String taskId;
     private String mainclass;
     private String task_type;
-    private ArrayBlockingQueue<Map> queue;
+    private ArrayBlockingQueue<Record> queue;
     private String PRODUCE_PATH ;
     private String broker_list;
     private KafkaProducer producer;
@@ -50,11 +50,10 @@ public class GeneratePasswordBook implements TransformInterface, RunningConfig
     private List<String> slavesIP = new ArrayList<String>();
 
     @Override
-    public void init(Map<String, String> config, ArrayBlockingQueue<Map> queue) {
+    public void init(Map<String, String> config, ArrayBlockingQueue<Record> queue) {
         this.zookeeper_addr = config.get("zookeeper_addr");
         this.broker_list = config.get("broker_list");
         this.topic = config.get("topic");
-//        this.topic = "abcdefghijklmnop";
         this.taskId = config.get("taskId");
         this.task_type = config.get("task_type");
         this.mainclass = config.get("mainclass");
@@ -106,13 +105,13 @@ public class GeneratePasswordBook implements TransformInterface, RunningConfig
     }
 
     @Override
-    public void process() {
+    public void producer() {
         boolean is_continue =true;
         ZooKeeper zookeeper = null;
         try {
             while(is_continue){
                 if(queue.size() > 0) {
-                    Map<String, String> record = queue.take();
+                    Map<String, String> record = (Map<String, String>) queue.take();
                     String host = record.get("host");
                     String username = record.get("username");
                     String password = record.get("password");
@@ -144,7 +143,7 @@ public class GeneratePasswordBook implements TransformInterface, RunningConfig
     }
 
     @Override
-    public void merge() {
+    public void consumer() {
 
         Map<String, List<KafkaStream<byte[], byte[]>>> msgStreams = consumer.createMessageStreams(topicCountMap);
         List<KafkaStream<byte[], byte[]>> msgStreamList = msgStreams.get(topic);
@@ -240,11 +239,6 @@ public class GeneratePasswordBook implements TransformInterface, RunningConfig
 
     }
 
-    @Override
-    public void close() {
-
-    }
-
     private boolean isBlank(String str) {
         boolean flag = false;
         if (null == str || str.equals("")) {
@@ -315,7 +309,7 @@ public class GeneratePasswordBook implements TransformInterface, RunningConfig
     }
 
     public static void main(String[] args) {
-        GeneratePasswordBook passwdBook = new GeneratePasswordBook();
+        GeneratePasswordBookOperator passwdBook = new GeneratePasswordBookOperator();
     }
 
 }

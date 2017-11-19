@@ -1,4 +1,4 @@
-package com.scistor.operator.pojo;
+package com.scistor.process.pojo;
 
 import com.alibaba.fastjson.JSONObject;
 

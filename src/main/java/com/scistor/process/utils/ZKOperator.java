@@ -1,7 +1,7 @@
-package com.scistor.operator.utils;
+package com.scistor.process.utils;
 
 import com.google.common.base.Objects;
-import com.scistor.operator.pojo.SlavesLocation;
+import com.scistor.process.pojo.SlavesLocation;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.zookeeper.KeeperException;

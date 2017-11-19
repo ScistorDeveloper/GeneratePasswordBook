@@ -1,4 +1,4 @@
-package com.scistor.operator.utils;
+package com.scistor.process.utils;
 
 import org.apache.commons.logging.Log;
 
